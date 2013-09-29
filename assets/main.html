@@ -1,0 +1,158 @@
+<html>
+	<head>
+		<title>FPT</title>
+		<meta name="copyright" content="Copyright 2013, Small Picture, Inc.">
+		<script src="./libraries/jquery-1.9.1.min.js"></script>  
+		<link href="./libraries/bootstrap.css" rel="stylesheet">
+		<script src="./libraries/bootstrap.min.js"></script>
+		
+		<link rel="stylesheet" href="./concord.css"/>
+		<script src="./concord.js"></script>
+		<script src="./concordUtils.js"></script>
+		
+		<script src="./pageStore.js"></script>
+		<script src="./navHistory.js"></script>
+		<script src="./main.js"></script>
+		
+		<link href="./font-awesome.css" rel="stylesheet">
+		
+		<link rel="stylesheet" href="./main.css"/>	
+		</head>
+		
+		<script>
+		    console.log("owl is running");
+		</script>
+		
+	<body>
+
+		<div class="divMenubar" id="idMenubar">
+			<div class="topbar-wrapper" style="z-index: 0; opacity: 1;">
+				<div class="navbar navbar-fixed-top" data-dropdown="dropdown">
+					<div class="navbar-inner">
+						<div class="container">
+							<a class="brand" href="index.html"><span id="idMenuProductName"></span></a>
+							<ul class="nav" id="idMainMenuList">
+								<li class="dropdown" id="idOutlinerMenu"> 
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Outliner&nbsp;<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a onclick="opExpand ();"><span class="menuKeystroke">Cmd-,</span>Expand</a></li>
+										<li><a onclick="opExpandAllLevels ();">Expand All Subs</a></li>
+										<li><a onclick="opExpandEverything ();">Expand Everything</a></li>
+										
+										<li class="divider"></li>
+										<li><a onclick="opCollapse ();"><span class="menuKeystroke">Cmd-.</span>Collapse</a></li>
+										<li><a onclick="opCollapseEverything ();">Collapse Everything</a></li>
+										
+										<li class="divider"></li>
+										<li><a onclick="opReorg (up, 1);"><span class="menuKeystroke">Cmd-U</span>Move Up</a></li>
+										<li><a onclick="opReorg (down, 1);"><span class="menuKeystroke">Cmd-D</span>Move Down</a></li>
+										<li><a onclick="opReorg (left, 1);"><span class="menuKeystroke">Cmd-L</span>Move Left</a></li>
+										<li><a onclick="opReorg (right, 1);"><span class="menuKeystroke">Cmd-R</span>Move Right</a></li>
+										
+										<li class="divider"></li>
+										<li><a onclick="opPromote ();"><span class="menuKeystroke">Cmd-[</span>Promote</a></li>
+										<li><a onclick="opDemote ();"><span class="menuKeystroke">Cmd-]</span>Demote</a></li>
+										
+										<li class="divider"></li>
+										<li><a onclick="runSelection ();"><span class="menuKeystroke">Cmd-/</span>Run Selection</a></li>
+										<li><a onclick="toggleComment ();"><span class="menuKeystroke">Cmd-\</span>Toggle Comment</a></li>
+										
+										<li class="divider"></li>
+										<li><a onclick="toggleRenderMode ();"><span class="menuKeystroke">Cmd-`</span>Toggle Render Mode</a></li>
+										</ul>
+									</li>
+                                    
+                                <li class="dropdown" id="idOwlMenu"> 
+								    <a href="#" class="dropdown-toggle" data-toggle="dropdown">OWL&nbsp;<b class="caret"></b></a>
+								    <ul class="dropdown-menu">
+									    <li><a href="https://github.com/interstar/OWL">About OWL (README on GitHub)</a></li>
+									    <li><a href="https://github.com/scripting/concord">Original Concord Project</a></li>
+									    <li><a href="http://docs.fargo.io/outlinerHowto/">The SmallPicture Outliner Howto</a></li>
+									    
+									    <li><a href="http://project.thoughtstorms.info">Project ThoughtStorms</a></li>
+									    
+							        </ul>
+							        </li>
+								    
+			
+								</ul>
+							<ul class="nav pull-right">
+								<li>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="idProductVersion"></span></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+
+	        
+		<div class="divOutlinerContainer">
+
+            <div class="fptNavBar">
+                <button class="button" id="backButton">&lt;</button>
+                <button class="button" id="forwardButton">&gt;</button>
+                <input  id="navPageName" />
+                <button class="button" id="goButton">Go!</button>
+                <button class="button" id="makeLinkButton">Link</button>
+                <!--button class="button" id="testButton">Test</button-->
+                </div>
+
+            <div>&nbsp;</div>
+          
+			<div id="outliner">
+				</div>
+			</div>
+			
+			
+			<script>
+			    console.log("owl - and a new one");
+			    function startup() {
+			        
+				    initLocalStorage ();
+                    
+                    $("#idMenuProductName").text (appConsts.productname);
+				    $("#idProductVersion").text ("v" + appConsts.version);
+				    
+				    $("#idMenubar .dropdown-menu li").each (function () {
+						    var li = $(this);
+						    var liContent = li.html ();
+						    liContent = liContent.replace ("Cmd-", cmdKeyPrefix);
+						    li.html (liContent);
+				    });
+				    setOutlinerPrefs ("#outliner", true, false);
+				    opSetFont (appPrefs.outlineFont, appPrefs.outlineFontSize, appPrefs.outlineLineHeight);
+				    $("#goButton").click(function(event) { goButton(); });
+				    $("#backButton").click(function(event) { backButton();  });
+				    $("#forwardButton").click(function(event) { forwardButton();  });
+				    $("#makeLinkButton").click(function(event) { makeLink(); });
+				    				    
+				    pageStore = new AndroidBasedPageStore();
+				    pageName = "HelloWorld";				    
+				    
+				    pageStore.get(pageName, function (page) { currentPage = page; });
+				    
+				    editPage (pageName);
+				    navHistory.newForward(pageName);
+				    
+				    console.log("owl concord.mobile " + concord.mobile);
+				    self.setInterval (function () {backgroundProcess ()}, 30000);
+				    
+			    };
+			    console.log("owl - after anotherStart is defined");
+			    
+			</script>
+			            
+            <script>
+		        
+			    $(document).ready (function () {
+			        console.log("owl BBB");
+			        startup();
+				    console.log("owl ZZZ");
+
+				    });
+			</script>
+		</body>
+	</html>
