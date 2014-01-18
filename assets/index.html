@@ -30,8 +30,20 @@
 			<div class="topbar-wrapper" style="z-index: 0; opacity: 1;">
 				<div class="navbar navbar-fixed-top" data-dropdown="dropdown">
 					<div class="navbar-inner">
-						<div class="container">
+						<div class="container">			                
+
 							<ul class="nav" id="idMainMenuList">
+
+                                <li>
+                                <span class="fptNavBar">
+                                    <button class="button fptNavInputs" id="backButton">&lt;</button>
+                                    <button class="button fptNavInputs" id="forwardButton">&gt;</button>
+                                    <input class="fptNavInputs" id="navPageName" />
+                                    <button class="button fptNavInputs" id="goButton">Go!</button>
+                                    <button class="button fptNavInputs" id="makeLinkButton">Link</button>
+                                </span>
+                                </li>   
+
 							    <li class="dropdown" id="idQuickMenu">
 							        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick&nbsp;<b class="caret"></b></a>
 							        <ul class="dropdown-menu">
@@ -103,14 +115,6 @@
 	        
 		<div class="divOutlinerContainer">
 
-            <div class="fptNavBar">
-                <button class="button" id="backButton">&lt;</button>
-                <button class="button" id="forwardButton">&gt;</button>
-                <input  id="navPageName" />
-                <button class="button" id="goButton">Go!</button>
-                <button class="button" id="makeLinkButton">Link</button>
-   
-            </div>
 
             <div>&nbsp;</div>
       
