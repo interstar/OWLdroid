@@ -23,6 +23,18 @@ class @DummyPageStore
 class @BrowserBasedPageStore
     k:(pName) -> "fpt.pageStore."+pName
 
+    x:(pName) -> "fpt.ps.X."+pName
+    
+    isDirty:(pName) ->        
+        s = localStorage.getItem(@x(pName))
+        return (s == "true")
+        
+    setDirty:(pName) ->
+        localStorage.setItem(@x(pName),"true")
+    
+    setClean:(pName) ->
+        localStorage.setItem(@x(pName),"false")
+
     hasName:(pName) ->
         s = localStorage.getItem(@k(pName))        
         if s?
@@ -37,84 +49,58 @@ class @BrowserBasedPageStore
             page = new Page(pName,initialOpmltext)
         callback(page)
         
-    set:(pName,page) -> localStorage.setItem(@k(pName),JSON.stringify(page))
+    set:(pName,page) -> 
+        localStorage.setItem(@k(pName),JSON.stringify(page))
+        # tell that we've changed this item in browser store
+        @setDirty(pName)
     
     save:(page,errorCallback) -> 
         page.saved = new Date().toString()
         @set(page.pageName,page)
         
 
-class SyncQueue
-    constructor:(@postUrl,@postSuccessHandler,@errorHandler) ->
-        @queue = []
-        
-    add:(pageName) ->
-        if pageName in @queue 
-            return
-        @queue.push(pageName)
-        console.log(@queue)
-        
-    isHolding:(pageName) -> pageName in @queue
-        
-    next:(pageStore) ->
-        console.log("in queue next ... url is #{@postUrl}")
-        while @queue.length > 0
-            pName = @queue.pop()
-            pageStore.get(pName,(page) =>
-                console.log("POSTING " + pName)
-                console.log(@postUrl+pName)
-                
-                $.ajax({
-                    type : 'POST',
-                    url : @postUrl+pName,
-                    data : {"pageName":pName, "body":page.body, "text":page.text},
-                    success : (data) =>
-                        @postSuccessHandler(pName)
-                    ,
-                    error   : (xmlHttpRequest) =>
-                            console.log("ERROR IN POST " + pName)
-                            console.log(xmlHttpRequest)
-                            @add(pName)
-                })
-                
-            )
-
 class @ServerBasedPageStore
-    constructor:(@getUrl,@postUrl,postSuccessHandler,saveErrorHandler) ->
-        @inner = new BrowserBasedPageStore()
-        @syncQueue = new SyncQueue(@postUrl,postSuccessHandler,saveErrorHandler)
-        @syncTimer = setInterval( () => 
-            console.log("in synctimer")
-            console.log("this is " + this)
-            @next()
-        ,30000)
-
-    get:(pName,callback) ->         
-        if @syncQueue.isHolding(pName) 
-            @inner.get(pName,callback)
-            return
-            
+    constructor:(@getUrl,@postUrl,@postSuccessHandler) ->
+        
+    get:(pName,callback) ->                            
         $.ajax({ 
             type: 'GET', 
-            url: @getUrl+pName+".opml",
+            url: @getUrl+pName,
             success: (data) ->
-                console.log(data)
-                callback(new Page(pName,data))
+                console.log("in success")
+                tmp_var = $.parseXML(data)
+                console.log(tmp_var)
+                xmlDoc = $(tmp_var)
+                               
+                msg = xmlDoc.find("message").html()
+
+                if msg == "MISSING FILE"
+                    console.log("Page #{pName} doesn't exist so creating")
+                    callback(new Page(pName,initialOpmltext))
+                else 
+                    callback(new Page(pName,data))
             ,    
-            error: (xmlHttpRequest) =>
-                console.log("ERROR IN get " + pName)                
-                @inner.get(pName,callback)
+            error: (response) =>
+                console.log("ERROR IN get " + pName)
+                console.log(response)
+                
         });        
         
        
-    save:(page) -> 
-        @inner.save(page)
-        console.log("Now adding #{page.pageName} to queue")
-        @syncQueue.add(page.pageName)
+    save:(page,saveErrorHandler) ->
+        $.ajax({
+            type : 'POST',
+            url : @postUrl+page.pageName,
+            data : {"pageName":page.pageName, "body":page.body, "text":page.text},
+            success : (data) =>
+                @postSuccessHandler(page.pageName)
+            ,
+            error   : (xmlHttpRequest) =>
+                    console.log("ERROR IN POST " + page.pageName)
+                    console.log(xmlHttpRequest)
+                    saveErrorHandler(xmlHttpRequest)
+        })
 
-    # this is regularly called on a timer
-    next:() ->
-        @syncQueue.next(@inner)
 
 
 class @AndroidBasedPageStore

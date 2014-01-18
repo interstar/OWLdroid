@@ -2856,24 +2856,19 @@ function Op(opmltext){
 						console.log("owl - return in mobile mode");
 						event.preventDefault();
 						keyCaptured=true;
-						
 						var cursor = concordInstance.op.getCursor();
 						var clonedCursor = cursor.clone(true, true);
-						
 						clonedCursor.removeClass("concord-cursor");
 						cursor.removeClass("selected");
 						cursor.removeClass("dirty");
 						cursor.removeClass("collapsed");
-						
 						concordInstance.op.setLineText("");
 						var icon = "<i"+" class=\"node-icon icon-caret-right\"><"+"/i>";
 						cursor.children(".concord-wrapper").children(".node-icon").replaceWith(icon);
-						
 						clonedCursor.insertBefore(cursor);
 						concordInstance.op.attributes.makeEmpty();
 						concordInstance.op.deleteSubs();
 						concordInstance.op.focusCursor();
-						
 						concordInstance.fireCallback("opInsert", concordInstance.op.setCursorContext(cursor));
 						}
 					else{
