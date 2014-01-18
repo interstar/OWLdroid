@@ -12,6 +12,8 @@
 		<link rel="stylesheet" href="./forked_concord/concord.css"/>
 		<script src="./forked_concord/concord.js"></script>
 		<script src="./forked_concord/concordUtils.js"></script>
+		<link href="./font-awesome.css" rel="stylesheet">
+
 		
 		<!-- OWL -->
 		<script src="./owllibs/pageStore.js"></script>
@@ -21,12 +23,8 @@
 		
 		<script src="./owllibs/setup.js"></script>
 		<script src="./local_setup.js"></script>
-
-		<link href="./font-awesome.css" rel="stylesheet">
-		
-		
-	</head>
-
+				
+    </head>
 
 	<body>
 		<div class="divMenubar" id="idMenubar">
@@ -52,7 +50,7 @@
 							    </li>
 
 								<li class="dropdown" id="idOutlinerMenu"> 								
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown">XXXXOutliner&nbsp;<b class="caret"></b></a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Outliner&nbsp;<b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<li><a onclick="opExpand ();"><span class="menuKeystroke">Cmd-,</span>Expand</a></li>
 										<li><a onclick="opExpandAllLevels ();">Expand All Subs</a></li>
@@ -118,25 +116,20 @@
                 <input  id="navPageName" />
                 <button class="button" id="goButton">Go!</button>
                 <button class="button" id="makeLinkButton">Link</button>
-                
-                
-              
    
             </div>
 
             <div>&nbsp;</div>
-          
-			<div id="outliner"></div>
-		</div>
-			
-            <script>
-		        
-			    $(document).ready (function () {
+      
+    		<div id="outliner"></div>
+        </div>
+
+		<script>		
+			$(document).ready (function () {
 			    setupEvents();
 			    localConfigs();
 				commonStartup ();
-
-				    });
+			});
 			</script>
 		</body>
 	</html>
