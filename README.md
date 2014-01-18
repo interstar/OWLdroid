@@ -15,12 +15,21 @@ The outliner / wiki works just as the in-browser version, but the Android app. n
 Status
 ------
 
-It's very, very crude and experimental. It just about works for me, but I've not tested it widely. If you're interested in this approach and want some help getting it working, then get in touch with me. 
+*tl;dr* : It's very, very crude and experimental. It just about works for me, but I've not tested it widely. If you're interested in this approach and want some help getting it working, then get in touch with me. 
+
+I've now refactored so that the code-base of OWLdroid, while still a fork of OWL / Concord, is largely in the same directory structure as the original OWL.
+
+The "Quick" menu is now working for moving and deleting nodes. But remember nodes can only be deleted in non-text mode, which is still 
+hard to enter in the OWLdroid version.
+
 
 Gotchas
 --------
-Note that I've forked all the OWL / Concord code (things are not in the standard directories. I'll try to put them back soon.)
 
-I'm saving the pages into a directory on your Android device called /sdcard/OWL/ ... make sure you've created it.
+I'm saving the pages into a directory on your Android device called /sdcard/OWL/ ... make sure you've created it. It won't work without this.
+
+The little arrow icons (due to font-awesome) that Concord uses to distinguish between open / closed suboutlines, don't actually appear in 
+the OWLdroid version (some font-awesome problem I haven't fixed yet). Opening / closing on the left of the line *does* work. But it's hard to select an invisible icon!
+
 
 
