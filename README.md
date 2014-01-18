@@ -15,7 +15,7 @@ The outliner / wiki works just as the in-browser version, but the Android app. n
 Status
 ------
 
-It's very, very crude and experimental. In just about works for me, but I've not tested it widely. If you're interested in this approach and want some help getting it working, then get in touch with me. 
+It's very, very crude and experimental. It just about works for me, but I've not tested it widely. If you're interested in this approach and want some help getting it working, then get in touch with me. 
 
 Gotchas
 --------
