@@ -16,11 +16,15 @@
 		<!-- OWL -->
 		<script src="./owllibs/pageStore.js"></script>
 		<script src="./owllibs/navHistory.js"></script>
-		<script src="./owllibs/main.js"></script>
+		<script src="./owllibs/main.js"></script>			
+		<link rel="stylesheet" href="./css/main.css"/>
 		
+		<script src="./owllibs/setup.js"></script>
+		<script src="./local_setup.js"></script>
+
 		<link href="./font-awesome.css" rel="stylesheet">
 		
-		<link rel="stylesheet" href="./css/main.css"/>	
+		
 	</head>
 
 
@@ -48,7 +52,7 @@
 							    </li>
 
 								<li class="dropdown" id="idOutlinerMenu"> 								
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Outliner&nbsp;<b class="caret"></b></a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">XXXXOutliner&nbsp;<b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<li><a onclick="opExpand ();"><span class="menuKeystroke">Cmd-,</span>Expand</a></li>
 										<li><a onclick="opExpandAllLevels ();">Expand All Subs</a></li>
@@ -125,51 +129,12 @@
 			<div id="outliner"></div>
 		</div>
 			
-			
-			<script>
-			    console.log("owl - and a new one");
-			    function startup() {
-			        
-				    initLocalStorage ();
-                    
-                    $("#idMenuProductName").text (appConsts.productname);
-				    $("#idProductVersion").text ("v" + appConsts.version);
-				    
-				    $("#idMenubar .dropdown-menu li").each (function () {
-						    var li = $(this);
-						    var liContent = li.html ();
-						    liContent = liContent.replace ("Cmd-", cmdKeyPrefix);
-						    li.html (liContent);
-				    });
-				    setOutlinerPrefs ("#outliner", true, false);
-				    opSetFont (appPrefs.outlineFont, appPrefs.outlineFontSize, appPrefs.outlineLineHeight);
-				    $("#goButton").click(function(event) { goButton(); });
-				    $("#backButton").click(function(event) { backButton();  });
-				    $("#forwardButton").click(function(event) { forwardButton();  });
-				    $("#makeLinkButton").click(function(event) { makeLink(); });
-				    				    
-				    pageStore = new AndroidBasedPageStore();
-				    pageName = "HelloWorld";				    
-				    
-				    pageStore.get(pageName, function (page) { currentPage = page; });
-				    
-				    editPage (pageName);
-				    navHistory.newForward(pageName);
-				    
-				    console.log("owl concord.mobile " + concord.mobile);
-				    self.setInterval (function () {backgroundProcess ()}, 30000);
-				    
-			    };
-			    console.log("owl - after anotherStart is defined");
-			    
-			</script>
-			            
             <script>
 		        
 			    $(document).ready (function () {
-			        console.log("owl BBB");
-			        startup();
-				    console.log("owl ZZZ");
+			    setupEvents();
+			    localConfigs();
+				commonStartup ();
 
 				    });
 			</script>

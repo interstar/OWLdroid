@@ -44,6 +44,7 @@ function setupEvents () {
 function commonStartup() {	
     // This block to allow opening specific outline when page loads in browser
     // TODO check if working
+    /*
     path = window.location.pathname + window.location.hash;
     console.log(path);
     console.l
@@ -55,8 +56,9 @@ function commonStartup() {
     }
     console.log(pageName);
     // End of specific page opening
-
-		
+    */
+    	
+    pageName = "HelloWorld";				    		
 	editPage (pageName);
 	navHistory.newForward(pageName);
 	

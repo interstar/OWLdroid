@@ -2,7 +2,7 @@
 			var appConsts = {
 				"productname": "OWL",
 				"productnameForDisplay": "OWL",  
-				"version": "0.50"
+				"version": "0.1"
 				}
 			var appPrefs = {
 				"outlineFont": "Arial", "outlineFontSize": 16, "outlineLineHeight": 24,
@@ -16,20 +16,6 @@
 			var navHistory = new NavHistory();
 
 			
-			
-			function initLocalStorage () {
-			/*
-				if (localStorage.ctOpmlSaves == undefined) {
-					localStorage.ctOpmlSaves = 0;
-					}
-				if (localStorage.whenLastSave == undefined) {
-					localStorage.whenLastSave = new Date ().toString ();
-					}
-				if (localStorage.flTextMode == undefined) {
-					localStorage.flTextMode = "true";
-					}
-					*/
-				}
 				
 			function setInclude () { //used to test includes
 				opSetOneAtt ("type", "include");
@@ -41,7 +27,6 @@
 			    console.log("Editing page "+pageName);
 			    
 			    pageStore.get(pageName, function(page) {
-			        
 				    opXmlToOutline (page.body); 
 				    currentPage = page;
 				    $("#navPageName").val(currentPage.pageName);
@@ -49,13 +34,14 @@
 				}
 
             function goButton() {
+                savePageNow();
 			    var pageName = $("#navPageName").val();			    
                 forwardTo(pageName);			    
             }
 
             function forwardTo(pageName) {
-                navHistory.newForward(pageName);
-			    savePageNow();
+                savePageNow();
+                navHistory.newForward(pageName);			    
 			    editPage(pageName);
             }
 
@@ -72,7 +58,7 @@
 		    }
 		    
 		    
-		
+		    // Original Concord code
 			function nukeDom () {
 				var summit, htmltext = "", indentlevel = 0;
 				$(defaultUtilsOutliner).concord ().op.visitToSummit (function (headline) {
@@ -145,7 +131,7 @@
 			
 			function opKeystrokeCallback (event) { 
 				whenLastKeystroke = new Date (); 
-				}
+			}
 				
 			function runSelection () {
 				var value = eval (opGetLineText ());
@@ -185,7 +171,7 @@
 					});
 				}
 
-
+            // My functions           
 
             function makeLink() {
                 var concordOp = $(defaultUtilsOutliner).concord().op;
@@ -199,11 +185,20 @@
 			    
 			    currentPage.text = ($(defaultUtilsOutliner).concord ().op.outlineToText());
 			     
-				pageStore.save(currentPage,function(x) {}); 
-				//localStorage.ctOpmlSaves++;
+				pageStore.save(currentPage,function(x) { console.log("ERROR " + x); }); 
+				
 				opClearChanged();
 				console.log ("savePageNow: " + currentPage.body.length + " chars.");
 				}
+				
+				
+
+            function opDeleteNode() {				
+                var concordOp = $(defaultUtilsOutliner).concord().op;
+                if(!concordOp.inTextMode()) {
+                    concordOp.deleteLine();
+                }
+            }
 				
 			function backgroundProcess () {
 				if (opHasChanged ()) {
