@@ -20,7 +20,7 @@ import android.webkit.WebView;
 
 public class MainActivity extends Activity {
 
-	public WebView mWebView;	
+	public WebView mWebView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
 		AssetManager am = getApplicationContext().getAssets();
 		String buffer, content = "";
 		try {
-			InputStream is = am.open("main.html"); 
+			InputStream is = am.open("index.html"); 
 			InputStreamReader inputStreamReader = new InputStreamReader(is);
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			while ((buffer = bufferedReader.readLine()) != null) {
@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
 		
 	}
  
-	@Override
+	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
