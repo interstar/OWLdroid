@@ -23,6 +23,10 @@ The "Quick" menu is now working for moving and deleting nodes. But remember node
 hard to enter in the OWLdroid version.
 
 
+Quick Look
+----------
+![OWLdroid Screenshot](http://sdi.thoughtstorms.info/wp-content/uploads/2014/02/Screenshot_2014-02-03-13-19-04.png)
+
 Gotchas
 --------
 
